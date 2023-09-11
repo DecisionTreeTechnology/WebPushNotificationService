@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <RootNamespace>DecisionTree.Abp.Notification.WebPush</RootNamespace>
+    <Version>1.0.2</Version>
+    <Authors>Lexuan Zhou</Authors>
+    <Company>DecisionTree</Company>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.1" />
+    <PackageReference Include="Volo.Abp.EntityFrameworkCore" Version="7.3.2" />
+    <ProjectReference Include="..\DecisionTree.Abp.Notification.WebPush.Domain\DecisionTree.Abp.Notification.WebPush.Domain.csproj" />
+    <None Include="..\DecisionTree.Abp.Notification.WebPush.EntityFrameworkCore\Docs\README.md" Pack="true" PackagePath="\"/>
+  </ItemGroup>
+
+</Project>

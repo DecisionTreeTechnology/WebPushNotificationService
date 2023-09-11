@@ -1,0 +1,53 @@
+# .NET Core files
+bin/
+obj/
+*.user
+*.suo
+*.dll
+*.exe
+*.pdb
+
+# Rider/IntelliJ files
+.idea/
+
+# VS Code files
+.vscode/
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# macOS files
+.DS_Store
+
+# Windows files
+Thumbs.db
+Desktop.ini
+
+# Node modules for Angular
+node_modules/
+yarn.lock
+package-lock.json
+
+# Angular build directory
+dist/
+
+# Python cache files
+__pycache__/
+*.pyc
+
+# Environment variables
+.env
+
+# Log files
+*.log
+
+# Temp files
+*.tmp
+*.swp
+
+# Database files
+*.db

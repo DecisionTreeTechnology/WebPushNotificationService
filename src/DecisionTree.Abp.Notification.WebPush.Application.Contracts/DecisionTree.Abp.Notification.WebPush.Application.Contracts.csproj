@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net7.0</TargetFrameworks>
+    <Nullable>enable</Nullable>
+    <RootNamespace>DecisionTree.Abp.Notification.WebPush</RootNamespace>
+    <Version>1.0.2</Version>
+    <Authors>Lexuan Zhou</Authors>
+    <Company>DecisionTree</Company>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.Ddd.Application.Contracts" Version="7.3.2" />
+    <PackageReference Include="Volo.Abp.Authorization.Abstractions" Version="7.3.2" />
+    <ProjectReference Include="..\DecisionTree.Abp.Notification.WebPush.Domain.Shared\DecisionTree.Abp.Notification.WebPush.Domain.Shared.csproj" />
+    <None Include="..\DecisionTree.Abp.Notification.WebPush.Application.Contracts\Docs\README.md" Pack="true" PackagePath="\"/>
+  </ItemGroup>
+
+</Project>

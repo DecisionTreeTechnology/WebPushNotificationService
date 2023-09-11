@@ -1,0 +1,258 @@
+@page "/WebPush/WebPushSubscriptions"
+
+
+
+@attribute [Authorize(WebPushPermissions.WebPushSubscriptions.Default)]
+@using global::DecisionTree.Abp.Notification.WebPush.WebPushSubscriptions
+@using Microsoft.AspNetCore.Authorization
+@using Volo.Abp.BlazoriseUI.Components
+@using Volo.Abp.AspNetCore.Components.Messages
+@using Volo.Abp.AspNetCore.Components.Web.Theming.Layout
+@using global::DecisionTree.Abp.Notification.WebPush.Permissions
+@using Microsoft.AspNetCore.Components
+@using Volo.Abp.Http.Client
+@inherits WebPushComponentBase
+@inject IWebPushSubscriptionsAppService WebPushSubscriptionsAppService
+@inject IUiMessageService UiMessageService
+@inject IRemoteServiceConfigurationProvider RemoteServiceConfigurationProvider
+@inject NavigationManager NavigationManager
+
+@* ************************* PAGE HEADER ************************* *@
+<PageHeader Title="@L["WebPushSubscriptions"]" BreadcrumbItems="BreadcrumbItems" Toolbar="Toolbar">
+
+</PageHeader>
+
+@* ************************* SEARCH ************************* *@
+<Card>
+    <CardBody>
+        <Form id="WebPushSubscriptionSearchForm" class="mb-3">
+            <Addons>
+                <Addon AddonType="AddonType.Body">
+                    <TextEdit @bind-Text="@Filter.FilterText"
+                              Autofocus="true"
+                              Placeholder="@L["Search"]">
+                    </TextEdit>
+                </Addon>
+                <Addon AddonType="AddonType.End">
+                    <SubmitButton Form="WebPushSubscriptionSearchForm" Clicked="GetWebPushSubscriptionsAsync">
+                        <Icon Name="IconName.Search" Class="me-1"></Icon>@L["Search"]
+                    </SubmitButton>
+                </Addon>
+            </Addons>
+        </Form>
+    </CardBody>
+</Card>
+
+@* ************************* DATA GRID ************************* *@
+<Card>
+    <CardBody>
+        <DataGrid TItem="WebPushSubscriptionDto"
+                  Data="WebPushSubscriptionList"
+                  ReadData="OnDataGridReadAsync"
+                  TotalItems="TotalCount"
+                  ShowPager="true"
+                  Responsive="true"
+                  PageSize="PageSize">
+            <DataGridColumns>
+                <DataGridEntityActionsColumn TItem="WebPushSubscriptionDto" @ref="@EntityActionsColumn">
+                    <DisplayTemplate>
+                        <EntityActions TItem="WebPushSubscriptionDto" EntityActionsColumn="@EntityActionsColumn">
+                            <EntityAction TItem="WebPushSubscriptionDto"
+                                          Visible="@CanEditWebPushSubscription"
+                                          Clicked="async () => await OpenEditWebPushSubscriptionModalAsync(context)"
+                                          Text="@L["Edit"]"></EntityAction>
+                            <EntityAction TItem="WebPushSubscriptionDto"
+                                          Visible="@CanDeleteWebPushSubscription"
+                                          Clicked="() => DeleteWebPushSubscriptionAsync(context)"
+                                          ConfirmationMessage="@(()=> L["DeleteConfirmationMessage"])"
+                                          Text="@L["Delete"]"></EntityAction>
+                        </EntityActions>
+                    </DisplayTemplate>
+                </DataGridEntityActionsColumn>
+               
+              <DataGridColumn TItem="WebPushSubscriptionDto"
+                      Field="EndPoint"
+                      Caption="@L["EndPoint"]">
+              </DataGridColumn>
+
+              <DataGridColumn TItem="WebPushSubscriptionDto"
+                      Field="P256dh"
+                      Caption="@L["P256dh"]">
+              </DataGridColumn>
+
+              <DataGridColumn TItem="WebPushSubscriptionDto"
+                      Field="Auth"
+                      Caption="@L["Auth"]">
+              </DataGridColumn>
+
+
+
+              <DataGridColumn TItem="WebPushSubscriptionDto"
+                      Field="DeviceName"
+                      Caption="@L["DeviceName"]">
+              </DataGridColumn>
+
+            </DataGridColumns>
+        </DataGrid>
+    </CardBody>
+</Card>
+
+@* ************************* CREATE MODAL ************************* *@
+<Modal @ref="CreateWebPushSubscriptionModal" Closing="@CreateWebPushSubscriptionModal.CancelClosingModalWhenFocusLost">
+    <ModalContent Centered="true">
+        <Form id="CreateWebPushSubscriptionForm">
+            <ModalHeader>
+                <ModalTitle>@L["NewWebPushSubscription"]</ModalTitle>
+                <CloseButton Clicked="CloseCreateWebPushSubscriptionModalAsync" />
+            </ModalHeader>
+            <ModalBody>
+                <Validations @ref="@NewWebPushSubscriptionValidations"
+                            Mode="ValidationMode.Auto"
+                            Model="@NewWebPushSubscription"
+                            ValidateOnLoad="false">
+                     
+                    
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["EndPoint"] *</FieldLabel>
+                            <TextEdit @bind-Text="@NewWebPushSubscription.EndPoint"  >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["P256dh"] *</FieldLabel>
+                            <TextEdit @bind-Text="@NewWebPushSubscription.P256dh"  >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["Auth"] *</FieldLabel>
+                            <TextEdit @bind-Text="@NewWebPushSubscription.Auth"  >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+
+
+
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["DeviceName"]</FieldLabel>
+                            <TextEdit @bind-Text="@NewWebPushSubscription.DeviceName"  >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+
+                    
+                    
+                </Validations>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary"
+                        Clicked="CloseCreateWebPushSubscriptionModalAsync">
+                    @L["Cancel"]
+                </Button>
+                <SubmitButton Form="CreateWebPushSubscriptionForm" Clicked="CreateWebPushSubscriptionAsync" />
+            </ModalFooter>
+        </Form>
+    </ModalContent>
+</Modal>
+
+@* ************************* EDIT MODAL ************************* *@
+<Modal @ref="EditWebPushSubscriptionModal" Closing="@EditWebPushSubscriptionModal.CancelClosingModalWhenFocusLost">
+    <ModalContent Centered="true">
+        <Form id="EditWebPushSubscriptionForm">
+            <ModalHeader>
+                <ModalTitle>@L["Update"]</ModalTitle>
+                <CloseButton Clicked="CloseEditWebPushSubscriptionModalAsync" />
+            </ModalHeader>
+            <ModalBody>
+                <Validations @ref="@EditingWebPushSubscriptionValidations"
+                            Mode="ValidationMode.Auto"
+                            Model="@EditingWebPushSubscription"
+                            ValidateOnLoad="false">
+                     
+                    
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["EndPoint"] *</FieldLabel>
+                            <TextEdit @bind-Text="@EditingWebPushSubscription.EndPoint"  >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["P256dh"] *</FieldLabel>
+                            <TextEdit @bind-Text="@EditingWebPushSubscription.P256dh"  >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["Auth"] *</FieldLabel>
+                            <TextEdit @bind-Text="@EditingWebPushSubscription.Auth"  >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+
+
+
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["DeviceName"]</FieldLabel>
+                            <TextEdit @bind-Text="@EditingWebPushSubscription.DeviceName"  >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+
+                    
+                    
+                </Validations>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary"
+                        Clicked="CloseEditWebPushSubscriptionModalAsync">
+                    @L["Cancel"]
+                </Button>
+                <SubmitButton Form="CreateWebPushSubscriptionForm" Clicked="UpdateWebPushSubscriptionAsync" />
+            </ModalFooter>
+        </Form>
+    </ModalContent>
+</Modal>

@@ -1,0 +1,29 @@
+version: '3.4'
+
+services:
+  sqlserver:
+    environment:
+      - SA_PASSWORD=yourStrong(!)Password
+      - ACCEPT_EULA=Y
+    ports:
+      - "51599:1433"
+
+  auth-server:
+    environment:
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ConnectionStrings__Default=Server=sqlserver;Database=WebPush_Identity;Trusted_Connection=True;User=sa;Password=yourStrong(!)Password;Integrated Security=false
+      - ConnectionStrings__SqlServerCache=Server=sqlserver;Database=WebPush_Cache;Trusted_Connection=True;User=sa;Password=yourStrong(!)Password;Integrated Security=false
+    ports:
+      - "51600:80"
+
+  web-push:
+    environment:
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ConnectionStrings__Default=Server=sqlserver;Database=WebPush_ModuleDb;Trusted_Connection=True;User=sa;Password=yourStrong(!)Password;Integrated Security=false
+      - ConnectionStrings__AbpSettingManagement=Server=sqlserver;Database=WebPush_Identity;Trusted_Connection=True;User=sa;Password=yourStrong(!)Password;Integrated Security=false
+      - ConnectionStrings__AbpPermissionManagement=Server=sqlserver;Database=WebPush_Identity;Trusted_Connection=True;User=sa;Password=yourStrong(!)Password;Integrated Security=false
+      - ConnectionStrings__AbpAuditLogging=Server=sqlserver;Database=WebPush_Identity;Trusted_Connection=True;User=sa;Password=yourStrong(!)Password;Integrated Security=false
+      - ConnectionStrings__SqlServerCache=Server=sqlserver;Database=WebPush_Cache;Trusted_Connection=True;User=sa;Password=yourStrong(!)Password;Integrated Security=false
+      - AuthServer__Authority=http://auth-server
+    ports:
+      - "51601:80"

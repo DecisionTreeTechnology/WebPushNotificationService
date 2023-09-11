@@ -1,0 +1,248 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "cli": {
+    "analytics": false
+  },
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "web-push": {
+      "projectType": "library",
+      "root": "projects/web-push",
+      "sourceRoot": "projects/web-push/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/web-push/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/web-push/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/web-push/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/web-push/src/test.ts",
+            "tsConfig": "projects/web-push/tsconfig.spec.json",
+            "karmaConfig": "projects/web-push/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/web-push/**/*.ts",
+              "projects/web-push/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "dev-app": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/dev-app",
+      "sourceRoot": "projects/dev-app/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/dev-app",
+            "index": "projects/dev-app/src/index.html",
+            "main": "projects/dev-app/src/main.ts",
+            "polyfills": "projects/dev-app/src/polyfills.ts",
+            "tsConfig": "projects/dev-app/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "allowedCommonJsDependencies": ["chart.js", "js-sha256"],
+            "assets": ["projects/dev-app/src/favicon.ico", "projects/dev-app/src/assets"],
+            "styles": [
+              {
+                "input": "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+                "inject": true,
+                "bundleName": "fontawesome-all.min"
+              },
+              {
+                "input": "node_modules/@fortawesome/fontawesome-free/css/v4-shims.min.css",
+                "inject": true,
+                "bundleName": "fontawesome-v4-shims.min"
+              },
+              {
+                "input": "node_modules/@swimlane/ngx-datatable/index.css",
+                "inject": true,
+                "bundleName": "ngx-datatable-index"
+              },
+              {
+                "input": "node_modules/@swimlane/ngx-datatable/assets/icons.css",
+                "inject": true,
+                "bundleName": "ngx-datatable-icons"
+              },
+              {
+                "input": "node_modules/@swimlane/ngx-datatable/themes/material.css",
+                "inject": true,
+                "bundleName": "ngx-datatable-material"
+              },
+              {
+                "input": "node_modules/ng-zorro-antd/tree/style/index.min.css",
+                "inject": false,
+                "bundleName": "ng-zorro-antd-tree"
+              },
+              {
+                "input": "node_modules/@volo/abp.ng.theme.lepton/dist/global/styles/lepton1.min.css",
+                "inject": false,
+                "bundleName": "lepton1"
+              },
+              {
+                "input": "node_modules/@volo/abp.ng.theme.lepton/dist/global/styles/lepton2.min.css",
+                "inject": false,
+                "bundleName": "lepton2"
+              },
+              {
+                "input": "node_modules/@volo/abp.ng.theme.lepton/dist/global/styles/lepton3.min.css",
+                "inject": false,
+                "bundleName": "lepton3"
+              },
+              {
+                "input": "node_modules/@volo/abp.ng.theme.lepton/dist/global/styles/lepton4.min.css",
+                "inject": false,
+                "bundleName": "lepton4"
+              },
+              {
+                "input": "node_modules/@volo/abp.ng.theme.lepton/dist/global/styles/lepton5.min.css",
+                "inject": false,
+                "bundleName": "lepton5"
+              },
+              {
+                "input": "node_modules/@volo/abp.ng.theme.lepton/dist/global/styles/lepton6.min.css",
+                "inject": false,
+                "bundleName": "lepton6"
+              },
+              {
+                "input": "node_modules/@volo/abp.ng.theme.lepton/dist/global/styles/lepton1.rtl.min.css",
+                "inject": false,
+                "bundleName": "lepton1.rtl"
+              },
+              {
+                "input": "node_modules/@volo/abp.ng.theme.lepton/dist/global/styles/lepton2.rtl.min.css",
+                "inject": false,
+                "bundleName": "lepton2.rtl"
+              },
+              {
+                "input": "node_modules/@volo/abp.ng.theme.lepton/dist/global/styles/lepton3.rtl.min.css",
+                "inject": false,
+                "bundleName": "lepton3.rtl"
+              },
+              {
+                "input": "node_modules/@volo/abp.ng.theme.lepton/dist/global/styles/lepton4.rtl.min.css",
+                "inject": false,
+                "bundleName": "lepton4.rtl"
+              },
+              {
+                "input": "node_modules/@volo/abp.ng.theme.lepton/dist/global/styles/lepton5.rtl.min.css",
+                "inject": false,
+                "bundleName": "lepton5.rtl"
+              },
+              {
+                "input": "node_modules/@volo/abp.ng.theme.lepton/dist/global/styles/lepton6.rtl.min.css",
+                "inject": false,
+                "bundleName": "lepton6.rtl"
+              },
+              "projects/dev-app/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "100kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "projects/dev-app/src/environments/environment.ts",
+                  "with": "projects/dev-app/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "dev-app:build:production"
+            },
+            "development": {
+              "browserTarget": "dev-app:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "dev-app:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/dev-app/src/test.ts",
+            "polyfills": "projects/dev-app/src/polyfills.ts",
+            "tsConfig": "projects/dev-app/tsconfig.spec.json",
+            "karmaConfig": "projects/dev-app/karma.conf.js",
+            "inlineStyleLanguage": "scss",
+            "assets": ["projects/dev-app/src/favicon.ico", "projects/dev-app/src/assets"],
+            "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+              "node_modules/@fortawesome/fontawesome-free/css/v4-shims.min.css",
+              "node_modules/@swimlane/ngx-datatable/index.css",
+              "node_modules/@swimlane/ngx-datatable/assets/icons.css",
+              "node_modules/@swimlane/ngx-datatable/themes/material.css",
+              "projects/dev-app/src/styles.scss"
+            ],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["projects/dev-app/**/*.ts", "projects/dev-app/**/*.html"]
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "dev-app"
+}

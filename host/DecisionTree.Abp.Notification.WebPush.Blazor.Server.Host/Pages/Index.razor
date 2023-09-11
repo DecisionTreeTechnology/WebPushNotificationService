@@ -1,0 +1,24 @@
+﻿@page "/"
+@inherits WebPushComponentBase
+<div class="row entry-row">
+    <div class="col-auto">
+        <h1 class="content-header-title">Welcome to WebPush!</h1>
+    </div>
+</div>
+<Card>
+    <CardBody>
+        @if (!CurrentUser.IsAuthenticated)
+        {
+            <a class="btn btn-primary" href="/Account/Login"><i class="fa fa-sign-in"></i> @L["Login"]</a>
+        }
+        else
+        {
+            <strong>Claims</strong><br />
+            @foreach (var claims in CurrentUser.GetAllClaims())
+            {
+                <p>@($"{claims.Type}={claims.Value}")</p>
+            }
+        }
+    </CardBody>
+</Card>
+

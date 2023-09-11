@@ -1,0 +1,79 @@
+@page
+@using Microsoft.AspNetCore.Authorization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using DecisionTree.Abp.Notification.WebPush.Permissions
+@using DecisionTree.Abp.Notification.WebPush.Web.Pages.WebPush.WebPushSubscriptions
+@using DecisionTree.Abp.Notification.WebPush.Web.Menus
+@using Microsoft.AspNetCore.Mvc.Localization
+@using DecisionTree.Abp.Notification.WebPush.Localization
+@inject IHtmlLocalizer<WebPushResource> L
+@inject IAuthorizationService Authorization
+@model IndexModel
+@inject IPageLayout PageLayout
+@{
+    PageLayout.Content.Title = L["WebPushSubscriptions"].Value;
+    PageLayout.Content.MenuItemName = WebPushMenus.WebPushSubscriptions;
+}
+
+@section scripts
+{
+    <abp-script src="/Pages/WebPush/WebPushSubscriptions/index.js" />
+}
+
+@section content_toolbar {
+    <abp-button id="ExportToExcelButton" text="@L["ExportToExcel"].Value" icon="download" size="Small" button-type="Primary" />
+    @if (await Authorization.IsGrantedAsync(WebPushPermissions.WebPushSubscriptions.Create))
+    {
+        <abp-button id="NewWebPushSubscriptionButton" text="@L["NewWebPushSubscription"].Value" icon="plus" size="Small" button-type="Primary" />
+    }
+}
+
+<abp-card>
+    <abp-card-body>
+		<abp-row class="mb-3">
+            <abp-column size-md="_12">
+                <form id="SearchForm" autocomplete="off">
+                    <div class="input-group">
+                        <input class="form-control page-search-filter-text" id="FilterText" placeholder="@L["Search"]"/>
+                        <abp-button button-type="Primary" type="submit" icon="search"/>
+                    </div>
+                </form>
+            </abp-column>
+            <abp-column size-md="_12" class="mt-3">
+                <a href="javascript:;" id="AdvancedFilterSectionToggler" class="text-decoration-none">@L["SeeAdvancedFilters"]</a>
+            </abp-column>
+        </abp-row>
+
+        <abp-row id="AdvancedFilterSection" style="display: none;">
+            <abp-column size="_3">
+                <abp-input asp-for="EndPointFilter" label="@L["EndPoint"].Value" />
+            </abp-column>
+            <abp-column size="_3">
+                <abp-input asp-for="P256dhFilter" label="@L["P256dh"].Value" />
+            </abp-column>
+            <abp-column size="_3">
+                <abp-input asp-for="AuthFilter" label="@L["Auth"].Value" />
+            </abp-column>
+            <abp-column size="_3">
+                <abp-input asp-for="UserIdFilter" label="@L["UserId"].Value" />
+            </abp-column>
+            <abp-column size="_3">
+                <abp-input asp-for="DeviceNameFilter" label="@L["DeviceName"].Value" />
+            </abp-column>
+        </abp-row>
+
+        <abp-table striped-rows="true" id="WebPushSubscriptionsTable">
+            <thead>
+				<tr>
+					<th>@L["Actions"]</th>
+					<th>@L["EndPoint"]</th>
+					<th>@L["P256dh"]</th>
+					<th>@L["Auth"]</th>
+					<th>@L["UserId"]</th>
+					<th>@L["DeviceName"]</th>
+
+				</tr>
+            </thead>
+        </abp-table>
+    </abp-card-body>
+</abp-card>

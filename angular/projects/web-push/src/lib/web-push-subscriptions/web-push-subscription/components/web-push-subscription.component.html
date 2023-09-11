@@ -1,0 +1,267 @@
+<abp-page [title]="'WebPush::WebPushSubscriptions' | abpLocalization">
+  <abp-page-toolbar-container class="col">
+    <div class="text-lg-end pt-2">
+      <button
+        class="btn btn-primary btn-sm mx-2"
+        type="button"
+        (click)="subscribeToWebPush()"
+      >
+        {{ 'WebPush::Subscribe' | abpLocalization }}
+      </button>
+      <button
+        class="btn btn-primary btn-sm mx-2"
+        type="button"
+        [disabled]="isExportToExcelBusy"
+        (click)="exportToExcel()"
+      >
+        {{ 'WebPush::ExportToExcel' | abpLocalization }}
+      </button>
+
+      <button
+        *abpPermission="'WebPush.WebPushSubscriptions.Create'"
+        class="btn btn-primary btn-sm"
+        type="button"
+        (click)="create()"
+      >
+        <i class="fa fa-plus me-1" aria-hidden="true"></i>
+        {{ 'WebPush::NewWebPushSubscription' | abpLocalization }}
+      </button>
+    </div>
+  </abp-page-toolbar-container>
+
+  <abp-advanced-entity-filters localizationSourceName="WebPush" [list]="list">
+    <abp-advanced-entity-filters-form>
+      <form #filterForm (keyup.enter)="list.get()">
+        <div class="row">
+          <div class="col-12 col-sm-auto">
+            <div class="mb-3">
+              <label class="form-label" for="endPointFilter">
+                {{ 'WebPush::EndPoint' | abpLocalization }}
+              </label>
+
+              <input
+                id="endPointFilter"
+                class="form-control"
+                [(ngModel)]="filters.endPoint"
+                [ngModelOptions]="{ standalone: true }"
+              />
+            </div>
+          </div>
+          <div class="col-12 col-sm-auto">
+            <div class="mb-3">
+              <label class="form-label" for="p256dhFilter">
+                {{ 'WebPush::P256dh' | abpLocalization }}
+              </label>
+
+              <input
+                id="p256dhFilter"
+                class="form-control"
+                [(ngModel)]="filters.p256dh"
+                [ngModelOptions]="{ standalone: true }"
+              />
+            </div>
+          </div>
+          <div class="col-12 col-sm-auto">
+            <div class="mb-3">
+              <label class="form-label" for="authFilter">
+                {{ 'WebPush::Auth' | abpLocalization }}
+              </label>
+
+              <input
+                id="authFilter"
+                class="form-control"
+                [(ngModel)]="filters.auth"
+                [ngModelOptions]="{ standalone: true }"
+              />
+            </div>
+          </div>
+          <div class="col-12 col-sm-auto">
+            <div class="mb-3">
+              <label class="form-label" for="userIdFilter">
+                {{ 'WebPush::UserId' | abpLocalization }}
+              </label>
+
+              <input
+                id="userIdFilter"
+                class="form-control"
+                [(ngModel)]="filters.userId"
+                [ngModelOptions]="{ standalone: true }"
+              />
+            </div>
+          </div>
+          <div class="col-12 col-sm-auto">
+            <div class="mb-3">
+              <label class="form-label" for="deviceNameFilter">
+                {{ 'WebPush::DeviceName' | abpLocalization }}
+              </label>
+
+              <input
+                id="deviceNameFilter"
+                class="form-control"
+                [(ngModel)]="filters.deviceName"
+                [ngModelOptions]="{ standalone: true }"
+              />
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-auto align-self-end mb-3">
+            <div class="row">
+              <div class="col-6 col-sm-auto d-grid">
+                <button type="button" class="btn btn-outline-primary" (click)="clearFilters()">
+                  <span>{{ 'AbpUi::Clear' | abpLocalization }}</span>
+                </button>
+              </div>
+              <div class="col-6 col-sm-auto d-grid">
+                <button type="button" class="btn btn-primary" (click)="list.get()">
+                  <span>{{ 'AbpUi::Refresh' | abpLocalization }}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </abp-advanced-entity-filters-form>
+  </abp-advanced-entity-filters>
+
+  <div class="card">
+    <div class="card-body">
+      <ngx-datatable [rows]="data.items" [count]="data.totalCount" [list]="list" default>
+        <ngx-datatable-column
+          [name]="'AbpUi::Actions' | abpLocalization"
+          [maxWidth]="150"
+          [width]="150"
+          [sortable]="false"
+        >
+          <ng-template let-row="row" let-i="rowIndex" ngx-datatable-cell-template>
+            <div ngbDropdown container="body" class="d-inline-block">
+              <button
+                class="btn btn-primary btn-sm dropdown-toggle"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                ngbDropdownToggle
+              >
+                <i class="fa fa-cog me-1" aria-hidden="true"></i>
+                {{ 'AbpUi::Actions' | abpLocalization }}
+              </button>
+
+              <div ngbDropdownMenu>
+                <button
+                  ngbDropdownItem
+                  *abpPermission="'WebPush.WebPushSubscriptions.Edit'"
+                  (click)="update(row)"
+                >
+                  {{ 'AbpUi::Edit' | abpLocalization }}
+                </button>
+
+                <button
+                  ngbDropdownItem
+                  *abpPermission="'WebPush.WebPushSubscriptions.Delete'"
+                  (click)="delete(row)"
+                >
+                  {{ 'AbpUi::Delete' | abpLocalization }}
+                </button>
+              </div>
+            </div>
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="{{ 'WebPush::EndPoint' | abpLocalization }}" prop="endPoint">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row.endPoint }}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="{{ 'WebPush::P256dh' | abpLocalization }}" prop="p256dh">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row.p256dh }}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="{{ 'WebPush::Auth' | abpLocalization }}" prop="auth">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row.auth }}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="{{ 'WebPush::UserId' | abpLocalization }}" prop="userId">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row.userId }}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column
+          name="{{ 'WebPush::DeviceName' | abpLocalization }}"
+          prop="deviceName"
+        >
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row.deviceName }}
+          </ng-template>
+        </ngx-datatable-column>
+      </ngx-datatable>
+    </div>
+  </div>
+</abp-page>
+
+<abp-modal [busy]="isModalBusy" [(visible)]="isModalOpen">
+  <ng-template #abpHeader>
+    <h3>
+      {{ (selected ? 'AbpUi::Edit' : 'WebPush::NewWebPushSubscription') | abpLocalization }}
+    </h3>
+  </ng-template>
+
+  <ng-template #abpBody>
+    <form [formGroup]="form" id="web-push-subscription" (ngSubmit)="submitForm()" validateOnSubmit>
+      <div class="mt-2 fade-in-top">
+        <div class="mb-3">
+          <label class="form-label" for="web-push-subscription-end-point">
+            {{ 'WebPush::EndPoint' | abpLocalization }} *
+          </label>
+
+          <input
+            id="web-push-subscription-end-point"
+            formControlName="endPoint"
+            class="form-control"
+            autofocus
+          />
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="web-push-subscription-p256dh">
+            {{ 'WebPush::P256dh' | abpLocalization }} *
+          </label>
+
+          <input id="web-push-subscription-p256dh" formControlName="p256dh" class="form-control" />
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="web-push-subscription-auth">
+            {{ 'WebPush::Auth' | abpLocalization }} *
+          </label>
+
+          <input id="web-push-subscription-auth" formControlName="auth" class="form-control" />
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="web-push-subscription-user-id">
+            {{ 'WebPush::UserId' | abpLocalization }}
+          </label>
+
+          <input id="web-push-subscription-user-id" formControlName="userId" class="form-control" />
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="web-push-subscription-device-name">
+            {{ 'WebPush::DeviceName' | abpLocalization }}
+          </label>
+
+          <input
+            id="web-push-subscription-device-name"
+            formControlName="deviceName"
+            class="form-control"
+          />
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #abpFooter>
+    <button type="button" class="btn btn-secondary" abpClose>
+      {{ 'AbpUi::Cancel' | abpLocalization }}
+    </button>
+
+    <abp-button iconClass="fa fa-check" buttonType="submit" formName="web-push-subscription">
+      {{ 'AbpUi::Save' | abpLocalization }}
+    </abp-button>
+  </ng-template>
+</abp-modal>

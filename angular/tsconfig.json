@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.prod.json",
+  "compilerOptions": {
+    "paths": {
+      "@decision-tree.Abp.Notification/web-push": [
+        "projects/web-push/src/public-api.ts"
+      ],
+      "@decision-tree.Abp.Notification/web-push/config": [
+        "projects/web-push/config/src/public-api.ts"
+      ],
+      "@proxy": ["projects/web-push/src/lib/proxy/index.ts"],
+      "@proxy/*": ["projects/web-push/src/lib/proxy/*"]
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "culture": "ru",
+  "texts": {
+    "SamplePageMessage": "Пример страницы для модуля WebPush",
+    "Menu:WebPush": "WebPush"
+  }
+}

@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Blazorise.Bootstrap5" Version="1.2.3" />
+    <PackageReference Include="Blazorise.Icons.FontAwesome" Version="1.2.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.Autofac.WebAssembly" Version="7.3.2" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Components.WebAssembly.LeptonTheme" Version="7.3.2" />
+    <PackageReference Include="Volo.Abp.LeptonTheme.Management.Blazor.WebAssembly" Version="7.3.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.SettingManagement.Blazor.WebAssembly" Version="7.3.2" />
+    <PackageReference Include="Volo.Saas.Host.Blazor.WebAssembly" Version="7.3.2" />
+    <PackageReference Include="Volo.Abp.Identity.Pro.Blazor.WebAssembly" Version="7.3.2" />
+    <PackageReference Include="Volo.Abp.Account.Pro.Admin.Blazor.WebAssembly" Version="7.3.2" />
+    <PackageReference Include="Volo.Abp.OpenIddict.Pro.Blazor.WebAssembly" Version="7.3.2" />
+    <PackageReference Include="Volo.Abp.TextTemplateManagement.Blazor.WebAssembly" Version="7.3.2" />
+    <PackageReference Include="Volo.Abp.AuditLogging.Blazor.WebAssembly" Version="7.3.2" />
+    <PackageReference Include="Volo.Abp.LanguageManagement.Blazor.WebAssembly" Version="7.3.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DecisionTree.Abp.Notification.WebPush.Host.Shared\DecisionTree.Abp.Notification.WebPush.Host.Shared.csproj" />
+    <ProjectReference Include="..\..\src\DecisionTree.Abp.Notification.WebPush.Blazor.WebAssembly\DecisionTree.Abp.Notification.WebPush.Blazor.WebAssembly.csproj" />
+  </ItemGroup>
+
+</Project>
